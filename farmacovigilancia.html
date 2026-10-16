@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pasantes CEFARVI · Facultad de Farmacia UCV</title>
+<meta name="description" content="Funciones de los pasantes del Centro Efector de Farmacovigilancia (CEFARVI) de la Facultad de Farmacia de la Universidad Central de Venezuela.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0d2d55;
+    --navy-2:#123d70;
+    --teal:#0f8b8d;
+    --teal-soft:#e3f3f2;
+    --gold:#d9a521;
+    --red:#c0392b;
+    --ink:#1b2430;
+    --muted:#5b6675;
+    --line:#e3e8ef;
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --radius:16px;
+    --shadow:0 10px 30px -12px rgba(13,45,85,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+
+  /* ---------- Barra superior ---------- */
+  .topbar{
+    background:#fff;border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:50;
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+  .brand .logo{height:48px;width:auto}
+  .brand .divider{width:1px;height:38px;background:var(--line)}
+  .brand-text{line-height:1.2}
+  .brand-text strong{display:block;font-size:.95rem;color:var(--navy);letter-spacing:.02em}
+  .brand-text span{font-size:.78rem;color:var(--muted)}
+  nav ul{display:flex;gap:26px;list-style:none}
+  nav a{text-decoration:none;font-size:.9rem;font-weight:500;color:var(--muted);transition:color .2s}
+  nav a:hover{color:var(--teal)}
+  .fallback-logo{display:none}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;color:#fff;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(15,139,141,.45), transparent 45%),
+      radial-gradient(circle at 10% 90%, rgba(217,165,33,.18), transparent 40%),
+      linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);
+    background-size:22px 22px;pointer-events:none;
+  }
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .9fr;gap:48px;align-items:center;padding-top:84px;padding-bottom:96px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+    padding:6px 14px;border-radius:999px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  }
+  .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold)}
+  .hero h1{
+    font-family:'Fraunces',Georgia,serif;font-weight:700;
+    font-size:clamp(2rem,4.4vw,3.3rem);line-height:1.12;margin:22px 0 18px;
+  }
+  .hero h1 em{font-style:normal;color:#7fd6d3}
+  .hero p.lead{font-size:1.08rem;color:rgba(255,255,255,.82);max-width:560px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+    padding:13px 22px;border-radius:10px;font-weight:600;font-size:.95rem;transition:transform .2s, background .2s;
+  }
+  .btn-primary{background:var(--gold);color:var(--navy)}
+  .btn-primary:hover{transform:translateY(-2px);background:#e8b630}
+  .btn-ghost{border:1px solid rgba(255,255,255,.35);color:#fff}
+  .btn-ghost:hover{background:rgba(255,255,255,.08)}
+
+  .hero-card{
+    background:rgba(255,255,255,.08);backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:30px;
+  }
+  .hero-card .seal{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+  .seal-badge{
+    width:64px;height:64px;border-radius:16px;background:#fff;display:grid;place-items:center;flex-shrink:0;
+  }
+  .hero-card h3{font-family:'Fraunces',serif;font-size:1.35rem}
+  .hero-card .sub{font-size:.85rem;color:rgba(255,255,255,.7)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px}
+  .stat{background:rgba(255,255,255,.07);border-radius:12px;padding:14px 10px;text-align:center}
+  .stat b{display:block;font-family:'Fraunces',serif;font-size:1.7rem;color:#fff}
+  .stat small{font-size:.72rem;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em}
+
+  /* ---------- Secciones ---------- */
+  section{padding:88px 0}
+  .section-head{max-width:720px;margin-bottom:44px}
+  .kicker{color:var(--teal);font-weight:700;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase}
+  .section-head h2{font-family:'Fraunces',serif;font-size:clamp(1.7rem,3vw,2.3rem);color:var(--navy);margin:10px 0 12px;line-height:1.2}
+  .section-head p{color:var(--muted)}
+
+  /* Acerca */
+  .about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .about-item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+  .icon{
+    width:46px;height:46px;border-radius:12px;background:var(--teal-soft);color:var(--teal);
+    display:grid;place-items:center;margin-bottom:16px;
+  }
+  .icon svg{width:24px;height:24px}
+  .about-item h3{font-size:1.05rem;color:var(--navy);margin-bottom:6px}
+  .about-item p{font-size:.93rem;color:var(--muted)}
+
+  /* Funciones */
+  #funciones{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .group{margin-bottom:46px}
+  .group:last-child{margin-bottom:0}
+  .group-title{
+    display:flex;align-items:center;gap:12px;margin-bottom:18px;
+    font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);
+  }
+  .group-title::after{content:"";flex:1;height:1px;background:var(--line)}
+  .group-title .dot{width:10px;height:10px;border-radius:3px;background:var(--teal)}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .fn{
+    position:relative;display:flex;gap:18px;
+    background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 24px 24px 22px;transition:transform .25s, box-shadow .25s, border-color .25s;
+  }
+  .fn:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#cfe6e5;background:#fff}
+  .num{
+    flex-shrink:0;width:44px;height:44px;border-radius:12px;
+    background:var(--navy);color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:1.1rem;
+    display:grid;place-items:center;
+  }
+  .fn h3{font-size:1rem;color:var(--navy);margin-bottom:6px;line-height:1.35}
+  .fn p{font-size:.93rem;color:var(--muted)}
+  .tag{
+    display:inline-block;margin-top:10px;font-size:.72rem;font-weight:600;letter-spacing:.04em;
+    padding:3px 10px;border-radius:999px;background:var(--teal-soft);color:var(--teal);
+  }
+  .tag.alert{background:#fbeae8;color:var(--red)}
+  .fn.wide{grid-column:1/-1}
+
+  /* Principios */
+  .principles{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch}
+  .callout{
+    border-radius:20px;padding:36px;color:#fff;
+    background:linear-gradient(135deg,var(--teal) 0%,#0b6f71 100%);
+  }
+  .callout h3{font-family:'Fraunces',serif;font-size:1.6rem;margin-bottom:12px;line-height:1.25}
+  .callout p{color:rgba(255,255,255,.88)}
+  .checklist{list-style:none;display:grid;gap:14px}
+  .checklist li{
+    display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px;
+  }
+  .checklist li svg{flex-shrink:0;width:22px;height:22px;color:var(--teal);margin-top:2px}
+  .checklist strong{display:block;color:var(--navy);font-size:.97rem}
+  .checklist span{font-size:.9rem;color:var(--muted)}
+
+  /* Contacto */
+  .contact{
+    background:var(--navy);color:#fff;border-radius:24px;padding:44px;
+    display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:center;
+  }
+  .contact h2{font-family:'Fraunces',serif;font-size:1.9rem;margin-bottom:10px}
+  .contact p{color:rgba(255,255,255,.78)}
+  .contact-list{list-style:none;display:grid;gap:14px}
+  .contact-list li{display:flex;gap:14px;align-items:flex-start;font-size:.95rem}
+  .contact-list svg{width:20px;height:20px;flex-shrink:0;color:var(--gold);margin-top:3px}
+  .contact-list a{text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.35)}
+
+  /* Footer */
+  footer{padding:36px 0;text-align:center;color:var(--muted);font-size:.85rem}
+  footer .foot-logos{display:flex;justify-content:center;align-items:center;gap:18px;margin-bottom:14px}
+  footer .foot-logos img{height:42px;width:auto;opacity:.85}
+
+  /* Animación de entrada */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.visible{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
+
+  /* Responsive */
+  @media (max-width:960px){
+    .hero .wrap{grid-template-columns:1fr;padding-top:60px;padding-bottom:70px}
+    .about-grid{grid-template-columns:1fr}
+    .principles,.contact{grid-template-columns:1fr}
+    nav{display:none}
+  }
+  @media (max-width:680px){
+    .cards{grid-template-columns:1fr}
+    .brand .logo{height:40px}
+    .brand-text span{display:none}
+    section{padding:64px 0}
+    .contact{padding:30px}
+    .fn{padding:20px}
+  }
+  @media print{
+    .topbar{position:static}
+    .hero{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ======= BARRA SUPERIOR ======= -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Inicio">
+      <img class="logo" src="https://www.ucv.ve/fileadmin/templates/core/img/ucv.png" alt="Universidad Central de Venezuela"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fallback-logo logo" viewBox="0 0 48 48" width="48" height="48" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="#0d2d55"/>
+        <text x="24" y="29" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#d9a521">UCV</text>
+      </svg>
+      <span class="divider"></span>
+      <img class="logo" src="https://www.ucv.ve/fileadmin/templates/core/img/faculta_farmacia.png" alt="Facultad de Farmacia UCV"
+           onerror="this.style.display='none'">
+      <span class="brand-text">
+        <strong>CEFARVI</strong>
+        <span>Centro Efector de Farmacovigilancia · Farmacia UCV</span>
+      </span>
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#centro">El Centro</a></li>
+        <li><a href="#funciones">Funciones</a></li>
+        <li><a href="#principios">Principios</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ======= HERO ======= -->
+<section class="hero" id="inicio" style="padding:0">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Programa de Pasantías</span>
+      <h1>Funciones de los pasantes del <em>Centro Efector de Farmacovigilancia</em></h1>
+      <p class="lead">Facultad de Farmacia de la Universidad Central de Venezuela. Conoce el rol que cumplen los pasantes del CEFARVI en la vigilancia de la seguridad de los medicamentos y en la promoción de la notificación espontánea de reacciones adversas.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#funciones">
+          Ver funciones
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#contacto">Contactar al centro</a>
+      </div>
+    </div>
+
+    <aside class="hero-card">
+      <div class="seal">
+        <div class="seal-badge">
+          <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+            <path d="M20 3 6 9v10c0 9 6 15.5 14 18 8-2.5 14-9 14-18V9L20 3z" fill="#0d2d55"/>
+            <rect x="17" y="12" width="6" height="16" rx="1.5" fill="#7fd6d3"/>
+            <rect x="12" y="17" width="16" height="6" rx="1.5" fill="#7fd6d3"/>
+          </svg>
+        </div>
+        <div>
+          <h3>CEFARVI</h3>
+          <div class="sub">Uso seguro de los medicamentos</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>10</b><small>Funciones</small></div>
+        <div class="stat"><b>4</b><small>Áreas</small></div>
+        <div class="stat"><b>BPFV</b><small>Formación</small></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ======= EL CENTRO ======= -->
+<section id="centro">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">El Centro</span>
+      <h2>¿Qué es el CEFARVI?</h2>
+      <p>El Centro de Farmacovigilancia de la Facultad de Farmacia de la UCV es un centro efector cuya misión es incentivar el reporte de las reacciones adversas a medicamentos (RAM), contribuyendo al uso racional y seguro de los medicamentos. Las notificaciones recibidas se codifican, documentan y almacenan siguiendo los lineamientos internacionales de farmacovigilancia.</p>
+    </div>
+    <div class="about-grid">
+      <article class="about-item reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3>Detectar</h3>
+        <p>Recepción de sospechas de reacciones adversas notificadas por profesionales de la salud y la comunidad universitaria.</p>
+      </article>
+      <article class="about-item reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Evaluar</h3>
+        <p>Clasificación por gravedad, documentación con fuentes farmacológicas y seguimiento de cada expediente.</p>
+      </article>
+      <article class="about-item reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+        <h3>Divulgar</h3>
+        <p>Educación a la comunidad sobre la importancia de la notificación espontánea en el uso seguro de los medicamentos.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======= FUNCIONES ======= -->
+<section id="funciones">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Rol del pasante</span>
+      <h2>Funciones de los pasantes</h2>
+      <p>Todas las actividades se realizan bajo la supervisión del farmacéutico coordinador o adjunto del centro, organizadas en cuatro áreas de trabajo.</p>
+    </div>
+
+    <!-- Área 1 -->
+    <div class="group">
+      <div class="group-title"><span class="dot"></span>Gestión de notificaciones RAM</div>
+      <div class="cards">
+        <article class="fn reveal">
+          <div class="num">01</div>
+          <div>
+            <h3>Recepción de sospechas de RAM</h3>
+            <p>Colaborar en la recepción de las sospechas de reacciones adversas a medicamentos (RAM) notificadas en el ámbito territorial del centro.</p>
+          </div>
+        </article>
+        <article class="fn reveal">
+          <div class="num">02</div>
+          <div>
+            <h3>Priorización por gravedad</h3>
+            <p>Agrupar y ordenar los reportes según su prioridad y gravedad, con especial atención a los casos clasificados como graves, para la pronta revisión del farmacéutico coordinador o adjunto.</p>
+            <span class="tag alert">Casos graves primero</span>
+          </div>
+        </article>
+        <article class="fn reveal">
+          <div class="num">03</div>
+          <div>
+            <h3>Comunicación con notificadores</h3>
+            <p>Participar bajo supervisión en la comunicación con los notificadores (profesionales de la salud o la comunidad universitaria) para recopilar datos faltantes, completar información clínica o realizar el seguimiento de los expedientes de RAM que lo requieran.</p>
+            <span class="tag">Bajo supervisión</span>
+          </div>
+        </article>
+        <article class="fn reveal">
+          <div class="num">04</div>
+          <div>
+            <h3>Consulta de fuentes farmacológicas</h3>
+            <p>Auxiliar en la consulta de fuentes de información farmacológica para documentar antecedentes de reacciones adversas o interacciones reportadas.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Área 2 -->
+    <div class="group">
+      <div class="group-title"><span class="dot" style="background:var(--gold)"></span>Educación y divulgación</div>
+      <div class="cards">
+        <article class="fn reveal">
+          <div class="num">05</div>
+          <div>
+            <h3>Material informativo</h3>
+            <p>Colaborar en el diseño y elaboración de material informativo (infografías, guías rápidas, carteleras o boletines) dirigido a la comunidad para incentivar el uso correcto del formulario de recogida de sospechas de RAM.</p>
+          </div>
+        </article>
+        <article class="fn reveal">
+          <div class="num">06</div>
+          <div>
+            <h3>Campañas informativas</h3>
+            <p>Participar en campañas informativas dentro de la Facultad de Farmacia para dar a conocer el rol del CEFARVI y la importancia de la notificación espontánea en el uso seguro de los medicamentos.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Área 3 -->
+    <div class="group">
+      <div class="group-title"><span class="dot" style="background:var(--red)"></span>Documentación y confidencialidad</div>
+      <div class="cards">
+        <article class="fn reveal">
+          <div class="num">07</div>
+          <div>
+            <h3>Organización y archivo seguro</h3>
+            <p>Colaborar en la organización y archivo seguro de la documentación física y digital, asegurando el cumplimiento de los protocolos que restringen el acceso a personas no autorizadas.</p>
+          </div>
+        </article>
+        <article class="fn reveal">
+          <div class="num">08</div>
+          <div>
+            <h3>Confidencialidad de datos</h3>
+            <p>Velar estrictamente por la confidencialidad y la protección de la identidad y datos personales de los pacientes y notificadores en todos los registros manejados.</p>
+            <span class="tag alert">Obligatorio</span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Área 4 -->
+    <div class="group">
+      <div class="group-title"><span class="dot" style="background:var(--navy)"></span>Calidad y formación</div>
+      <div class="cards">
+        <article class="fn reveal">
+          <div class="num">09</div>
+          <div>
+            <h3>Procedimientos Operativos Estándar</h3>
+            <p>Colaborar activamente en la búsqueda de referencias normativas, revisión, redacción preliminar y estandarización de los Procedimientos Operativos Estándar del centro, apoyando al farmacéutico coordinador en su actualización e implementación.</p>
+            <span class="tag">POE</span>
+          </div>
+        </article>
+        <article class="fn reveal">
+          <div class="num">10</div>
+          <div>
+            <h3>Capacitación en Buenas Prácticas</h3>
+            <p>Asistir y aprovechar activamente los espacios de capacitación obligatoria en Buenas Prácticas de Farmacovigilancia.</p>
+            <span class="tag">BPFV</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PRINCIPIOS ======= -->
+<section id="principios">
+  <div class="wrap">
+    <div class="principles">
+      <div class="callout reveal">
+        <span class="kicker" style="color:#bff0ee">Compromiso</span>
+        <h3>Cada notificación cuenta para un uso más seguro de los medicamentos</h3>
+        <p>El pasante del CEFARVI es un puente entre la comunidad y el sistema de farmacovigilancia: recibe, organiza, documenta y divulga, siempre con rigor técnico y respeto absoluto por la privacidad de pacientes y notificadores.</p>
+      </div>
+      <ul class="checklist">
+        <li class="reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div><strong>Confidencialidad</strong><span>Protección de identidad y datos personales en todos los registros.</span></div>
+        </li>
+        <li class="reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+          <div><strong>Supervisión profesional</strong><span>Trabajo guiado por el farmacéutico coordinador o adjunto.</span></div>
+        </li>
+        <li class="reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <div><strong>Rigor documental</strong><span>Fuentes farmacológicas confiables y procedimientos estandarizados.</span></div>
+        </li>
+        <li class="reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <div><strong>Formación continua</strong><span>Capacitación obligatoria en Buenas Prácticas de Farmacovigilancia.</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CONTACTO ======= -->
+<section id="contacto" style="padding-top:0">
+  <div class="wrap">
+    <div class="contact reveal">
+      <div>
+        <span class="kicker" style="color:var(--gold)">Contacto</span>
+        <h2>Centro de Farmacovigilancia</h2>
+        <p>¿Sospechas de una reacción adversa a un medicamento? Notifícala. Tu reporte contribuye a la seguridad de todos.</p>
+      </div>
+      <ul class="contact-list">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Piso 1, Edificio de la Facultad de Farmacia. Calle Minerva cruce con Calle Interna, Ciudad Universitaria de Caracas.</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+          <span><a href="tel:+582126052698">0212 605 26 98</a></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          <span><a href="mailto:cefarvi@ucv.ve">cefarvi@ucv.ve</a></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======= FOOTER ======= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-logos">
+      <img src="https://www.ucv.ve/fileadmin/templates/core/img/ucv.png" alt="UCV" onerror="this.style.display='none'">
+      <img src="https://www.ucv.ve/fileadmin/templates/core/img/faculta_farmacia.png" alt="Facultad de Farmacia" onerror="this.style.display='none'">
+    </div>
+    <p>CEFARVI · Centro Efector de Farmacovigilancia · Facultad de Farmacia · Universidad Central de Venezuela</p>
+    <p>&copy; <span id="year">2026</span> · Ciudad Universitaria de Caracas</p>
+  </div>
+</footer>
+
+<script>
+  // Año dinámico
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Animación al hacer scroll
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){
+      els.forEach(function(el){el.classList.add('visible')});
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    },{threshold:.12});
+    els.forEach(function(el){io.observe(el)});
+  })();
+</script>
+</body>
+</html>
